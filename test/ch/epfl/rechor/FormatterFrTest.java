@@ -1,8 +1,8 @@
 package ch.epfl.rechor;
 
-import ch.epfl.rechor.journey.Journey;
-import ch.epfl.rechor.journey.Stop;
-import ch.epfl.rechor.journey.Vehicle;
+import ch.epfl.rechor.jounrey.Journey;
+import ch.epfl.rechor.jounrey.Stop;
+import ch.epfl.rechor.jounrey.Vehicle;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FormatterFrTest {
     @Test

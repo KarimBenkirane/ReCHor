@@ -1,11 +1,13 @@
 package ch.epfl.rechor.journey;
 
+import ch.epfl.rechor.jounrey.Vehicle;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static ch.epfl.rechor.journey.Vehicle.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static ch.epfl.rechor.jounrey.Vehicle.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class VehicleTest {
     @Test

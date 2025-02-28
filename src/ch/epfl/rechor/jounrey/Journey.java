@@ -11,6 +11,13 @@ public record Journey(List<Leg> legs) {
     public Journey {
         Preconditions.checkArgument(!legs.isEmpty());
         legs = List.copyOf(legs);
+        for (int i = 1; i < legs.size() - 1; i++) {
+            Leg curLeg = legs.get(i);
+            Leg nextLeg = legs.get(i + 1);
+            Preconditions.checkArgument((curLeg.arrTime().isBefore(nextLeg.depTime())) || curLeg.arrTime().equals(nextLeg.depTime()));
+            Preconditions.checkArgument(curLeg.arrStop().name().equals(nextLeg.depStop().name()));
+        }
+
     }
 
     public Stop depStop() {
@@ -51,7 +58,7 @@ public record Journey(List<Leg> legs) {
         public record IntermediateStop(Stop stop, LocalDateTime arrTime, LocalDateTime depTime) {
             public IntermediateStop {
                 stop = Objects.requireNonNull(stop, "L'arrêt ne doit pas être null !");
-                Preconditions.checkArgument(depTime.isBefore(arrTime));
+                Preconditions.checkArgument(arrTime.isBefore(depTime) || depTime.equals(arrTime));
             }
 
         }
@@ -65,8 +72,8 @@ public record Journey(List<Leg> legs) {
                 arrStop = Objects.requireNonNull(arrStop);
                 arrTime = Objects.requireNonNull(arrTime);
                 vehicle = Objects.requireNonNull(vehicle);
-                Preconditions.checkArgument(depTime.isBefore(arrTime));
                 intermediateStops = List.copyOf(intermediateStops);
+                Preconditions.checkArgument(depTime.isBefore(arrTime) || depTime.equals(arrTime));
                 route = Objects.requireNonNull(route);
                 destination = Objects.requireNonNull(destination);
             }
@@ -78,7 +85,7 @@ public record Journey(List<Leg> legs) {
                 depTime = Objects.requireNonNull(depTime);
                 arrStop = Objects.requireNonNull(arrStop);
                 arrTime = Objects.requireNonNull(arrTime);
-                Preconditions.checkArgument(depTime.isBefore(arrTime));
+                Preconditions.checkArgument(depTime.isBefore(arrTime) || depTime.equals(arrTime));
             }
 
             public List<IntermediateStop> intermediateStops() {

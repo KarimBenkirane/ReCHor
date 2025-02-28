@@ -5,8 +5,13 @@ import ch.epfl.rechor.jounrey.Stop;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 
 public final class FormatterFr {
+    private static DateTimeFormatter fmt = new DateTimeFormatterBuilder().appendValue(ChronoField.HOUR_OF_DAY).appendLiteral('h').appendValue(ChronoField.MINUTE_OF_HOUR, 2).toFormatter();
+
     private FormatterFr() {
     }
 
@@ -22,10 +27,11 @@ public final class FormatterFr {
     }
 
     public static String formatTime(LocalDateTime dateTime) {
-        Preconditions.checkArgument(dateTime != null);
+     /*   Preconditions.checkArgument(dateTime != null);
         int hour = dateTime.getHour();
         int minute = dateTime.getMinute();
-        return String.format("%dh%02d", hour, minute);
+        return String.format("%dh%02d", hour, minute);*/
+        return fmt.format(dateTime);
     }
 
     public static String formatPlatformName(Stop stop) {

@@ -16,6 +16,7 @@ public record Journey(List<Leg> legs) {
             Leg nextLeg = legs.get(i + 1);
             Preconditions.checkArgument((curLeg.arrTime().isBefore(nextLeg.depTime())) || curLeg.arrTime().equals(nextLeg.depTime()));
             Preconditions.checkArgument(curLeg.arrStop().name().equals(nextLeg.depStop().name()));
+            Preconditions.checkArgument((curLeg instanceof Leg.Foot && nextLeg instanceof Leg.Transport) || (curLeg instanceof Leg.Transport && nextLeg instanceof Leg.Foot));
         }
 
     }
@@ -55,23 +56,23 @@ public record Journey(List<Leg> legs) {
             return Duration.between(depTime(), arrTime());
         }
 
-        public record IntermediateStop(Stop stop, LocalDateTime arrTime, LocalDateTime depTime) {
+        record IntermediateStop(Stop stop, LocalDateTime arrTime, LocalDateTime depTime) {
             public IntermediateStop {
-                stop = Objects.requireNonNull(stop, "L'arrêt ne doit pas être null !");
+                Objects.requireNonNull(stop, "L'arrêt ne doit pas être null !");
                 Preconditions.checkArgument(arrTime.isBefore(depTime) || depTime.equals(arrTime));
             }
 
         }
 
-        public record Transport(Stop depStop, LocalDateTime depTime, Stop arrStop, LocalDateTime arrTime,
-                                List<IntermediateStop> intermediateStops, Vehicle vehicle, String route,
-                                String destination) implements Leg {
+        record Transport(Stop depStop, LocalDateTime depTime, Stop arrStop, LocalDateTime arrTime,
+                         List<IntermediateStop> intermediateStops, Vehicle vehicle, String route,
+                         String destination) implements Leg {
             public Transport {
-                depStop = Objects.requireNonNull(depStop);
-                depTime = Objects.requireNonNull(depTime);
-                arrStop = Objects.requireNonNull(arrStop);
-                arrTime = Objects.requireNonNull(arrTime);
-                vehicle = Objects.requireNonNull(vehicle);
+                Objects.requireNonNull(depStop);
+                Objects.requireNonNull(depTime);
+                Objects.requireNonNull(arrStop);
+                Objects.requireNonNull(arrTime);
+                Objects.requireNonNull(vehicle);
                 intermediateStops = List.copyOf(intermediateStops);
                 Preconditions.checkArgument(depTime.isBefore(arrTime) || depTime.equals(arrTime));
                 route = Objects.requireNonNull(route);
@@ -79,12 +80,12 @@ public record Journey(List<Leg> legs) {
             }
         }
 
-        public record Foot(Stop depStop, LocalDateTime depTime, Stop arrStop, LocalDateTime arrTime) implements Leg {
+        record Foot(Stop depStop, LocalDateTime depTime, Stop arrStop, LocalDateTime arrTime) implements Leg {
             public Foot {
-                depStop = Objects.requireNonNull(depStop);
-                depTime = Objects.requireNonNull(depTime);
-                arrStop = Objects.requireNonNull(arrStop);
-                arrTime = Objects.requireNonNull(arrTime);
+                Objects.requireNonNull(depStop);
+                Objects.requireNonNull(depTime);
+                Objects.requireNonNull(arrStop);
+                Objects.requireNonNull(arrTime);
                 Preconditions.checkArgument(depTime.isBefore(arrTime) || depTime.equals(arrTime));
             }
 

@@ -25,7 +25,14 @@ public final class IcalBuilder {
 
     public IcalBuilder add(Name name, String value) {
         if (value.length() > 73) {
-            /*To do*/
+            for (int i = 0; i < value.length(); i += 73) {
+                int end = Math.min(i + 73, value.length());
+                if (i == 0) {
+                    this.sb.append(name).append(":").append(value.substring(i, end)).append("\n");
+                } else {
+                    this.sb.append(" ").append(value.substring(i, end)).append("\n");
+                }
+            }
         } else {
             this.sb.append(name).append(":").append(value).append("\n");
         }

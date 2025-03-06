@@ -1,7 +1,7 @@
 package ch.epfl.rechor;
 
-import ch.epfl.rechor.jounrey.Journey;
-import ch.epfl.rechor.jounrey.Stop;
+import ch.epfl.rechor.journey.Journey;
+import ch.epfl.rechor.journey.Stop;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

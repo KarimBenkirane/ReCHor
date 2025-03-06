@@ -11,10 +11,10 @@ public class Bits32_24_8 {
     }
 
     public static int unpack24(int bits32) {
-        return bits32 >> 8 & 0xFFFFFF;
+        return bits32 >> 8;
     }
 
     public static int unpack8(int bits32) {
-        return (bits32 >> 24) & 0xFF;
+        return bits32 & 0xFF;
     }
 }

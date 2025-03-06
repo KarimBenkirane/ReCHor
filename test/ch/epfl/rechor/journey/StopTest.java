@@ -1,6 +1,5 @@
 package ch.epfl.rechor.journey;
 
-import ch.epfl.rechor.jounrey.Stop;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -1,8 +1,5 @@
 package ch.epfl.rechor.journey;
 
-import ch.epfl.rechor.jounrey.Journey;
-import ch.epfl.rechor.jounrey.Stop;
-import ch.epfl.rechor.jounrey.Vehicle;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

@@ -1,4 +1,4 @@
-package ch.epfl.rechor.jounrey;
+package ch.epfl.rechor.journey;
 
 import java.util.List;
 

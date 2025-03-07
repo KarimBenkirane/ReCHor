@@ -6,7 +6,7 @@ public final class Preconditions {
 
     public static void checkArgument(boolean shouldBeTrue) {
         if (!shouldBeTrue) {
-            throw new IllegalArgumentException("La condition: " + shouldBeTrue + " n'est pas vérifiée !");
+            throw new IllegalArgumentException("La condition n'est pas vérifiée !");
         }
     }
 }

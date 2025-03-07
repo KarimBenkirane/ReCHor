@@ -19,16 +19,17 @@ public class PackedCriteria {
     }
 
     public static boolean hasDepMins(long criteria) {
-        return criteria >> 51 != 0;
+        return (criteria >> 51) != 0;
     }
 
     public static int depMins(long criteria) {
         Preconditions.checkArgument(hasDepMins(criteria));
-        return (int) (criteria >> 51);
+        int depMins = ((int) (criteria >> 51));
+        return 4095 - depMins - 240;
     }
 
     public static int arrMins(long criteria) {
-        return (int) ((criteria >> 39) & 0xFFF);
+        return ((int) ((criteria >> 39) & 0xFFF)) - 240;
     }
 
     public static int changes(long criteria) {
@@ -36,15 +37,23 @@ public class PackedCriteria {
     }
 
     public static int payload(long criteria) {
-        return (int) (criteria & 0xFFFFFFFF);
+        return (int) (criteria);
     }
 
     public static boolean dominatesOrIsEqual(long criteria1, long criteria2) {
-        Preconditions.checkArgument((hasDepMins(criteria1) && !hasDepMins(criteria2)) ||
-                (hasDepMins(criteria2) && !hasDepMins(criteria1)));
+        Preconditions.checkArgument(
+                (hasDepMins(criteria1) && hasDepMins(criteria2)) ||
+                        (!hasDepMins(criteria1) && !hasDepMins(criteria2))
+        );
+        if (!hasDepMins(criteria1)) {
+            return (changes(criteria1) <= changes(criteria2)) &&
+                    (arrMins(criteria1) <= arrMins(criteria2));
+        }
         return (changes(criteria1) <= changes(criteria2)) &&
                 (arrMins(criteria1) <= arrMins(criteria2)) &&
-                (depMins(criteria1) <= depMins(criteria2));
+                (depMins(criteria1) >= depMins(criteria2));
+
+
     }
 
     public static long withoutDepMins(long criteria) {
@@ -53,8 +62,11 @@ public class PackedCriteria {
     }
 
     public static long withDepMins(long criteria, int depMins1) {
+        Preconditions.checkArgument(depMins1 >= -240 && depMins1 < 2880);
         criteria = withoutDepMins(criteria);
-        long depMins = depMins1 << 51;
+        depMins1 += 240;
+        depMins1 = 4095 - depMins1;
+        long depMins = (long) depMins1 << 51;
         return criteria | depMins;
     }
 

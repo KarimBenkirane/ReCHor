@@ -9,6 +9,8 @@ import java.util.List;
 
 public final class IcalBuilder {
     private final StringBuilder sb = new StringBuilder();
+    private static final String CRLF = "\r\n";
+
 
     private final DateTimeFormatter fmt = new DateTimeFormatterBuilder()
             .appendValue(ChronoField.YEAR)
@@ -28,24 +30,24 @@ public final class IcalBuilder {
             for (int i = 0; i < value.length(); i += 73) {
                 int end = Math.min(i + 73, value.length());
                 if (i == 0) {
-                    this.sb.append(name).append(":").append(value.substring(i, end)).append("\n");
+                    this.sb.append(name).append(":").append(value.substring(i, end)).append(CRLF);
                 } else {
-                    this.sb.append(" ").append(value.substring(i, end)).append("\n");
+                    this.sb.append(" ").append(value.substring(i, end)).append(CRLF);
                 }
             }
         } else {
-            this.sb.append(name).append(":").append(value).append("\n");
+            this.sb.append(name).append(":").append(value).append(CRLF);
         }
         return this;
     }
 
     public IcalBuilder add(Name name, LocalDateTime dateTime) {
-        this.sb.append(name).append(":").append(this.fmt.format(dateTime)).append("\n");
+        this.sb.append(name).append(":").append(this.fmt.format(dateTime)).append(CRLF);
         return this;
     }
 
     public IcalBuilder begin(Component component) {
-        this.sb.insert(0, "BEGIN:" + component + "\n");
+        this.sb.append("BEGIN:" + component + CRLF);
         this.components.add(component);
         return this;
     }
@@ -53,12 +55,13 @@ public final class IcalBuilder {
     public IcalBuilder end() {
         Preconditions.checkArgument(!this.components.isEmpty());
         Component lastComponent = this.components.getLast();
-        this.sb.append("END:").append(lastComponent.toString()).append("\n");
+        this.sb.append("END:").append(lastComponent.toString()).append(CRLF);
         this.components.removeLast();
         return this;
     }
 
     public String build() {
+        Preconditions.checkArgument(this.components.isEmpty());
         return this.sb.toString();
     }
 

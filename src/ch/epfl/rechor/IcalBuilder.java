@@ -22,26 +22,24 @@ public final class IcalBuilder {
             .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
             .toFormatter();
 
-    private List<Component> components = new ArrayList<>();
+    private final List<Component> components = new ArrayList<>();
 
 
     public IcalBuilder add(Name name, String value) {
         String fullLine = name + ":" + value;
-
+        int index = 0;
         if (fullLine.length() > 75) {
-            int index = 0;
-            this.sb.append(fullLine.substring(index, 75)).append(CRLF); // Première ligne complète
+            this.sb.append(fullLine.substring(index, 75)).append(CRLF);
 
-            index = 75; // Début de la suite
+            index = 75;
             while (index < fullLine.length()) {
                 int end = Math.min(index + 74, fullLine.length());
                 this.sb.append(" ").append(fullLine.substring(index, end)).append(CRLF);
                 index += 74;
             }
         } else {
-            this.sb.append(fullLine).append(CRLF);
+            this.sb.append(name).append(":").append(value).append(CRLF);
         }
-
         return this;
     }
 
@@ -52,7 +50,7 @@ public final class IcalBuilder {
     }
 
     public IcalBuilder begin(Component component) {
-        this.sb.append("BEGIN:" + component + CRLF);
+        this.sb.append("BEGIN:").append(component).append(CRLF);
         this.components.add(component);
         return this;
     }

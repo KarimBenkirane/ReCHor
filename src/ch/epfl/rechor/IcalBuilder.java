@@ -26,20 +26,25 @@ public final class IcalBuilder {
 
 
     public IcalBuilder add(Name name, String value) {
-        if (value.length() > 73) {
-            for (int i = 0; i < value.length(); i += 73) {
-                int end = Math.min(i + 73, value.length());
-                if (i == 0) {
-                    this.sb.append(name).append(":").append(value.substring(i, end)).append(CRLF);
-                } else {
-                    this.sb.append(" ").append(value.substring(i, end)).append(CRLF);
-                }
+        String fullLine = name + ":" + value;
+
+        if (fullLine.length() > 75) {
+            int index = 0;
+            this.sb.append(fullLine.substring(index, 75)).append(CRLF); // Première ligne complète
+
+            index = 75; // Début de la suite
+            while (index < fullLine.length()) {
+                int end = Math.min(index + 74, fullLine.length());
+                this.sb.append(" ").append(fullLine.substring(index, end)).append(CRLF);
+                index += 74;
             }
         } else {
-            this.sb.append(name).append(":").append(value).append(CRLF);
+            this.sb.append(fullLine).append(CRLF);
         }
+
         return this;
     }
+
 
     public IcalBuilder add(Name name, LocalDateTime dateTime) {
         this.sb.append(name).append(":").append(this.fmt.format(dateTime)).append(CRLF);

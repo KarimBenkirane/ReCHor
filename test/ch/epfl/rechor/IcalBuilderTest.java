@@ -77,7 +77,6 @@ class IcalBuilderTest {
 
         for (var line : actual.split(CRLF))
             assertTrue(line.length() <= 75);
-
         var unfoldedActual = actual.replaceAll(CRLF + " ", "");
         assertEquals(expected.trim(), unfoldedActual.trim());
     }
